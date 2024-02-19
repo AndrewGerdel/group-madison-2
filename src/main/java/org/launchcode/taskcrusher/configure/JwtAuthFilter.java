@@ -42,20 +42,21 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 }
             }
 
-            if (authElements.length == 2 && "Bearer".equals(authElements[0])) {
-                try{
-                    if ("GET".equals(request.getMethod())) {
-                        SecurityContextHolder.getContext().setAuthentication(userAuthProvider.validateKidToken(authElements[1]));
-                    }
-                    else {
-                        SecurityContextHolder.getContext().setAuthentication(
-                                userAuthProvider.validateKidTokenStrongly(authElements[1]));
-                    }
-                    } catch (RuntimeException e) {
-                    SecurityContextHolder.clearContext();
-                    throw e;
-                }
-            }
+            // this logic is kid-token specific, so it can't be here or it breaks all requests for parent users.
+//            if (authElements.length == 2 && "Bearer".equals(authElements[0])) {
+//                try{
+//                        if ("GET".equals(request.getMethod())) {
+//                            SecurityContextHolder.getContext().setAuthentication(userAuthProvider.validateKidToken(authElements[1]));
+//                        }
+//                        else {
+//                            SecurityContextHolder.getContext().setAuthentication(
+//                                    userAuthProvider.validateKidTokenStrongly(authElements[1]));
+//                        }
+//                    } catch (RuntimeException e) {
+//                    SecurityContextHolder.clearContext();
+//                    throw e;
+//                }
+//            }
         }
         filterChain.doFilter(request, response);
 

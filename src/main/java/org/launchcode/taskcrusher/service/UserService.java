@@ -31,19 +31,17 @@ public class UserService {
 
     public UserDto login(CredentialsDto credentialsDto) {
         User user = userRepository.findByUsername(credentialsDto.username())
-                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new AppException("Unknown user????", HttpStatus.NOT_FOUND));
 
-        Kid kidUser = kidRepository.findByUsername(credentialsDto.username())
-                .orElseThrow(() -> new AppException("Unknown kid user", HttpStatus.NOT_FOUND));
+        // this function is for parent login only. If you try to check for a kid user during parent login,
+        // then parent login will fail every time
+        //        Kid kidUser = kidRepository.findByUsername(credentialsDto.username())
+        //                .orElseThrow(() -> new AppException("Unknown kid user", HttpStatus.NOT_FOUND));
+
 
         if (passwordEncoder.matches(CharBuffer.wrap(credentialsDto.password()), user.getPassword())) {
             return userMapper.toUserDto(user);
         }
-//        throw new AppException("Invalid password", HttpStatus.BAD_REQUEST);
-
-//        if (passwordEncoder.matches(CharBuffer.wrap(credentialsDto.password()), kidUser.getPassword())) {
-//            return userMapper.toKidUserDto(kidUser);
-//        }
         throw new AppException("Invalid password", HttpStatus.BAD_REQUEST);
     }
 
@@ -68,7 +66,7 @@ public class UserService {
 
     public UserDto findByUsername(String username) {
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new AppException("Unknown user1", HttpStatus.NOT_FOUND));
         return userMapper.toUserDto(user);
     }
 
@@ -78,7 +76,7 @@ public class UserService {
 
     public KidUserDto kidLogin(CredentialsDto credentialsDto) {
         Kid kidUser = kidRepository.findByUsername(credentialsDto.username())
-                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new AppException("Unknown user2", HttpStatus.NOT_FOUND));
 
         if (passwordEncoder.matches(CharBuffer.wrap(credentialsDto.password()), kidUser.getPassword())) {
             return userMapper.toKidUserDto(kidUser);
@@ -102,7 +100,7 @@ public class UserService {
 
     public KidUserDto findByKidUsername(String username) {
         Kid kidUser = kidRepository.findByUsername(username)
-                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new AppException("Unknown user3", HttpStatus.NOT_FOUND));
         return userMapper.toKidUserDto(kidUser);
     }
 
