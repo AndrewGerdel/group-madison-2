@@ -26,11 +26,12 @@ public class SecurityConfig {
 
         http
                 .exceptionHandling(customizer -> customizer.authenticationEntryPoint(userAuthenticationEntryPoint))
+
                 .addFilterBefore(new JwtAuthFilter(userAuthProvider), BasicAuthenticationFilter.class)
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((requests) -> requests
-                .requestMatchers(HttpMethod.POST, "/api/parentLogin", "/api/register", "/api/kidLogin","/api/kidRegister").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/parentLogin", "/api/register", "/api/kidLogin").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/api/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
                                 .requestMatchers(HttpMethod.DELETE, "/api/**").permitAll()
