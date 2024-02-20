@@ -134,4 +134,11 @@ public class UserAuthProvider {
 
         return new UsernamePasswordAuthenticationToken(kidUser, null, Collections.emptyList());
     }
+
+    public Boolean getIsParentFlag(String token){
+        Algorithm algorithm = Algorithm.HMAC256(secretKey);
+        JWTVerifier verifier = JWT.require(algorithm).build();
+        DecodedJWT decoded = verifier.verify(token);
+        return decoded.getClaim("isParent").asBoolean();
+    }
 }
