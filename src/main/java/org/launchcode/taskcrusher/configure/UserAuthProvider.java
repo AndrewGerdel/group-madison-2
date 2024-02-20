@@ -38,7 +38,12 @@ public class UserAuthProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public String createToken(UserDto user) {
+    public String createToken(UserDto user, Boolean isParent) {
+
+        // katy i assume you have in your branch another controller that calls this function.  Probably KidAuthenticationController or something
+        // it would need to supply false to the isParent parameter
+
+
         Date now = new Date();
         Date validity = new Date(now.getTime() + 3600000); //1 hour
 
@@ -50,6 +55,7 @@ public class UserAuthProvider {
                 .withClaim("id",user.getId())
                 .withClaim("firstName", user.getFirstName())
                 .withClaim("lastName", user.getLastName())
+                .withClaim("isParent", isParent)
                 .sign(algorithm);
 
         logger.info("Generated Token: {}", token);// Print the token to console
